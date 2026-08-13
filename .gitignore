@@ -1,0 +1,6 @@
+.vs/
+*.db
+bin/
+obj/
+node_modules/
+.next/
