@@ -31,7 +31,8 @@ namespace AssignmentSystem.API.Controllers
                     Id = a.Id,
                     Title = a.Title,
                     Description = a.Description,
-                    CourseName = a.CourseName, // CourseName অন্তর্ভুক্ত করা হলো
+                    CourseName = a.CourseName,
+                    MaxMarks = a.MaxMarks, // MaxMarks ম্যাপ করা হলো
                     DueDate = a.DueDate,
                     CreatedAt = a.CreatedAt,
                     CreatedById = a.CreatedById,
@@ -61,6 +62,7 @@ namespace AssignmentSystem.API.Controllers
                 Title = assignment.Title,
                 Description = assignment.Description,
                 CourseName = assignment.CourseName,
+                MaxMarks = assignment.MaxMarks, // MaxMarks অন্তর্ভুক্ত করা হলো
                 DueDate = assignment.DueDate,
                 CreatedAt = assignment.CreatedAt,
                 CreatedById = assignment.CreatedById,
@@ -91,7 +93,8 @@ namespace AssignmentSystem.API.Controllers
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                CourseName = dto.CourseName, // CourseName সেভ করা হচ্ছে
+                CourseName = dto.CourseName,
+                MaxMarks = dto.MaxMarks, // MaxMarks সেভ করা হচ্ছে
                 DueDate = DateTime.SpecifyKind(dto.DueDate, DateTimeKind.Utc),
                 CreatedById = userId
             };
@@ -100,6 +103,27 @@ namespace AssignmentSystem.API.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetAssignment), new { id = assignment.Id }, assignment);
+        }
+
+        // PUT: api/Assignments/5 (Teacher/Admin অ্যাসাইনমেন্ট এডিট করতে পারবে)
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Teacher,Admin")]
+        public async Task<IActionResult> UpdateAssignment(int id, UpdateAssignmentDto dto)
+        {
+            var assignment = await _context.Assignments.FindAsync(id);
+            if (assignment == null)
+            {
+                return NotFound(new { message = "Assignment not found." });
+            }
+
+            assignment.Title = dto.Title;
+            assignment.Description = dto.Description;
+            assignment.CourseName = dto.CourseName;
+            assignment.MaxMarks = dto.MaxMarks;
+            assignment.DueDate = DateTime.SpecifyKind(dto.DueDate, DateTimeKind.Utc);
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Assignment updated successfully." });
         }
 
         // DELETE: api/Assignments/5 (শুধু Teacher/Admin ডিলিট করতে পারবে)

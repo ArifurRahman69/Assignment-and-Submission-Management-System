@@ -38,7 +38,8 @@ namespace AssignmentSystem.API.Controllers
                 Username = dto.Username,
                 Email = dto.Email,
                 PasswordHash = passwordHash,
-                Role = string.IsNullOrEmpty(dto.Role) ? "Student" : dto.Role
+                Role = string.IsNullOrEmpty(dto.Role) ? "Student" : dto.Role,
+                CourseName = dto.CourseName // <--- Course/Class অ্যাসাইন করা হলো
             };
 
             _context.Users.Add(user);
@@ -66,7 +67,8 @@ namespace AssignmentSystem.API.Controllers
                     user.Id,
                     user.Username,
                     user.Email,
-                    user.Role
+                    user.Role,
+                    user.CourseName // <--- Frontend-এর জন্য CourseName রিটার্ন করা হলো
                 }
             });
         }
@@ -80,6 +82,12 @@ namespace AssignmentSystem.API.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             };
+
+            // CourseName থাকলে ক্লেইমে যুক্ত হবে
+            if (!string.IsNullOrEmpty(user.CourseName))
+            {
+                claims.Add(new Claim("CourseName", user.CourseName));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("Jwt:Key").Value!));

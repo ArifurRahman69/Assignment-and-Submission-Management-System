@@ -12,6 +12,7 @@ namespace AssignmentSystem.API.Models
         [MaxLength(200)]
         public string Title { get; set; } = string.Empty;
         public string CourseName { get; set; } = string.Empty;
+        public decimal MaxMarks { get; set; } = 100;
 
         public string Description { get; set; } = string.Empty;
 

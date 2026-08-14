@@ -17,5 +17,6 @@ namespace AssignmentSystem.API.DTOs
 
         // "Teacher" or "Student"
         public string Role { get; set; } = "Student";
+        public string? CourseName { get; set; }
     }
 }
