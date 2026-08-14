@@ -71,6 +71,12 @@ namespace AssignmentSystem.API.Controllers
         [Authorize(Roles = "Teacher,Admin")]
         public async Task<ActionResult<AssignmentResponseDto>> CreateAssignment(CreateAssignmentDto dto)
         {
+            // Past Date Validation Check
+            if (dto.DueDate < DateTime.UtcNow)
+            {
+                return BadRequest(new { message = "Due date cannot be in the past." });
+            }
+
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
             {
