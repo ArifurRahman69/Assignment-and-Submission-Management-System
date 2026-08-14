@@ -31,6 +31,7 @@ namespace AssignmentSystem.API.Controllers
                     Id = a.Id,
                     Title = a.Title,
                     Description = a.Description,
+                    CourseName = a.CourseName, // CourseName অন্তর্ভুক্ত করা হলো
                     DueDate = a.DueDate,
                     CreatedAt = a.CreatedAt,
                     CreatedById = a.CreatedById,
@@ -59,6 +60,7 @@ namespace AssignmentSystem.API.Controllers
                 Id = assignment.Id,
                 Title = assignment.Title,
                 Description = assignment.Description,
+                CourseName = assignment.CourseName,
                 DueDate = assignment.DueDate,
                 CreatedAt = assignment.CreatedAt,
                 CreatedById = assignment.CreatedById,
@@ -89,6 +91,7 @@ namespace AssignmentSystem.API.Controllers
             {
                 Title = dto.Title,
                 Description = dto.Description,
+                CourseName = dto.CourseName, // CourseName সেভ করা হচ্ছে
                 DueDate = DateTime.SpecifyKind(dto.DueDate, DateTimeKind.Utc),
                 CreatedById = userId
             };

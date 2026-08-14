@@ -8,6 +8,7 @@ interface Assignment {
   id: number;
   title: string;
   description: string;
+  courseName?: string;
   dueDate: string;
   createdAt: string;
   createdByName: string;
@@ -33,6 +34,7 @@ export default function DashboardPage() {
   // Form States (Create Assignment)
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [courseName, setCourseName] = useState('');
   const [dueDate, setDueDate] = useState('');
 
   // Submission & Grading States
@@ -86,9 +88,10 @@ export default function DashboardPage() {
   const handleCreateAssignment = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.post('/Assignments', { title, description, dueDate });
+      await api.post('/Assignments', { title, description, courseName, dueDate });
       setTitle('');
       setDescription('');
+      setCourseName('');
       setDueDate('');
       fetchAssignments();
     } catch (err: any) {
@@ -199,6 +202,17 @@ export default function DashboardPage() {
               <div className="bg-white p-6 rounded shadow mb-6">
                 <h2 className="text-lg font-bold text-gray-800 mb-4">Create New Assignment</h2>
                 <form onSubmit={handleCreateAssignment} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Course / Class Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. CSE101 or Class 10 - Math"
+                      value={courseName}
+                      onChange={(e) => setCourseName(e.target.value)}
+                      className="w-full border rounded p-2 text-sm mt-1"
+                    />
+                  </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Title</label>
                     <input
@@ -320,7 +334,12 @@ export default function DashboardPage() {
                   <div key={item.id} className="bg-white p-5 rounded shadow">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-bold text-gray-800">{item.title}</h3>
+                        {item.courseName && (
+                          <span className="inline-block bg-purple-100 text-purple-700 font-bold text-xs px-2 py-0.5 rounded mb-2">
+                            {item.courseName}
+                          </span>
+                        )}
+                        <h3 className="font-bold text-gray-800 text-base">{item.title}</h3>
                         <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                       </div>
                       {(user?.role === 'Teacher' || user?.role === 'Admin') && (
