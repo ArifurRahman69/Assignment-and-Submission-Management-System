@@ -16,7 +16,6 @@ namespace AssignmentSystem.API.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [PasswordHash]
         public string PasswordHash { get; set; } = string.Empty;
 
         // Role: "Admin", "Teacher", or "Student"
@@ -24,10 +23,13 @@ namespace AssignmentSystem.API.Models
         [MaxLength(20)]
         public string Role { get; set; } = "Student";
 
-        // Student/User-এর নির্ধারিত কোর্স বা ক্লাস (যেমন: "CLASS 8", "CSE101")
-        // Teacher/Admin-দের ক্ষেত্রে এটি null হতে পারে
+        // Student-এর জন্য নির্ধারিত ক্লাস বা কোর্স (যেমন: "CLASS 8")
         [MaxLength(100)]
         public string? CourseName { get; set; }
+
+        // Teacher-এর জন্য নির্ধারিত সাবজেক্ট (যেমন: "Mathematics")
+        [MaxLength(100)]
+        public string? SubjectName { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
